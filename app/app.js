@@ -56,7 +56,8 @@ function findArc(x1, x2) {
 
 function minimalisation() {
     let count = 0;
-    let i = 0;
+    let i = 0;    
+    
     while (i < sommets.length) {
         for (let j = 0; j < sommets[i].suivants.length; j++) {
             let lamdaRes = undefined;
@@ -87,15 +88,47 @@ function minimalisation() {
         }
         i++;
     }
+    _chemins = cheminOptimale();
 }
 
-function chemin(){
+function dernierSommet() {
+    return sommets[sommets.length -1];
+}
+
+function premierSommet() {
+    return sommets[0];
+}
+
+function changeType(type){
+    switch(type){        
+        case 'min':    
+            sommets.map(function(sommet,index,sommets){
+                sommet.lamda = 'M';
+            });
+        break;
+        case 'max':
+            sommets.map(function(sommet,index,sommets){
+                sommet.lamda = 0;
+            }); 
+        break;
+    }       
+}
+
+function viderChemins(){
+    _chemins = [];
+}
+
+function maximisation(){
+    changeType('max');
+}
+
+function cheminOptimale(){
     let chemins = [];
-    let s = sommets[sommets.length];
-    let done = false;
+    let s = dernierSommet();
     chemins.push(s);
-    while(s != null){            
-        for(let i=0; i< s.predececeurs.length;i++){
+    while((s != null) && (s.lamda != 0)) {            
+        let nb = s.predececeurs.length;
+        for(let i=0; i< nb; i++){
             let arc = findArc(s.predececeurs[i].numero, s.numero);
             let lamdap = arc.valeur + s.predececeurs[i].lamda;
             if(s.lamda === lamdap) {
@@ -103,14 +136,15 @@ function chemin(){
                 break;
             }
         }
-        s = s.predececeurs[        
+        s = chemins[chemins.length-1];        
     }
+    return chemins;
 }
-
 
 // ici i script demarre
 let sommets = [];
 let arcs = [];
+let _chemins = [];
 
 // creation des sommets
 for (let i = 0; i < 16; i++) {
