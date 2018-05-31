@@ -54,18 +54,43 @@ function findArc(x1, x2) {
     });
 }
 
+function dernierSommet() {
+    return sommets[sommets.length - 1];
+}
+
+function premierSommet() {
+    return sommets[0];
+}
+
+function changeType(type) {
+    switch (type) {
+        case 'min':
+            sommets.map(function (sommet, index, sommets) {
+                sommet.lamda = 'M';
+            });
+            break;
+        case 'max':
+            sommets.map(function (sommet, index, sommets) {
+                sommet.lamda = 0;
+            });
+            break;
+    }
+}
+
+function viderChemins() {
+    _chemins = [];
+}
+
 function minimalisation() {
     let count = 0;
-    let i = 0;    
-    
+    let i = 0;
     while (i < sommets.length) {
         for (let j = 0; j < sommets[i].suivants.length; j++) {
             let lamdaRes = undefined;
-            let vij = findArc(sommets[i].numero,sommets[i].suivants[j].numero).valeur;
+            let vij = findArc(sommets[i].numero, sommets[i].suivants[j].numero).valeur;
             if (sommets[i].numero < sommets[i].suivants[j].numero) {                     // Vxi,xj
                 if (sommets[i].suivants[j].lamda === 'M') {
-                    lamdaRes = vij;
-                    sommets[i].suivants[j].lamda = sommets[i].lamda + lamdaRes;
+                    sommets[i].suivants[j].lamda = sommets[i].lamda + vij;
                 } else {
                     lamdaRes = sommets[i].suivants[j].lamda - sommets[i].lamda; // lamdaj - lamdai
                     if (lamdaRes > vij) {
@@ -74,69 +99,63 @@ function minimalisation() {
                 }
             } else { // pas de === car cela devra être gérée par l'application elle-même            
                 if (sommets[i].suivants[j].lamda === 'M') {
-                    lamdaRes = vij;
-                    sommets[i].suivants[j].lamda = sommets[i].lamda + lamdaRes;
+                    sommets[i].suivants[j].lamda = sommets[i].lamda + vij;
                 } else {
                     lamdaRes = sommets[i].suivants[j].lamda - sommets[i].lamda; // lamdaj - lamdai
                     if (lamdaRes > vij) {
                         sommets[i].suivants[j].lamda = sommets[i].lamda + vij;
-                        i = sommets[i].suivants[j].numero -2;
-                        j=0;
+                        i = sommets[i].suivants[j].numero - 2;
+                        j = 0;
                     }
-                }                
-            }             
+                }
+            }
         }
         i++;
     }
     _chemins = cheminOptimale();
 }
 
-function dernierSommet() {
-    return sommets[sommets.length -1];
-}
-
-function premierSommet() {
-    return sommets[0];
-}
-
-function changeType(type){
-    switch(type){        
-        case 'min':    
-            sommets.map(function(sommet,index,sommets){
-                sommet.lamda = 'M';
-            });
-        break;
-        case 'max':
-            sommets.map(function(sommet,index,sommets){
-                sommet.lamda = 0;
-            }); 
-        break;
-    }       
-}
-
-function viderChemins(){
-    _chemins = [];
-}
-
-function maximisation(){
+function maximisation() {
     changeType('max');
+    let i = 0;
+    while (i < sommets.length) {
+        for (let j = 0; j < sommets[i].suivants.length; j++) {
+            let lamdaRes = undefined;
+            let vij = findArc(sommets[i].numero, sommets[i].suivants[j].numero).valeur;
+            if (sommets[i].numero < sommets[i].suivants[j].numero) {
+                lamdaRes = sommets[i].suivants[j].lamda - sommets[i].lamda;
+                if (lamdaRes < vij) {
+                    sommets[i].suivants[j].lamda = vij + sommets[i].lamda;
+                }
+            } else {
+                lamdaRes = sommets[i].suivants[j].lamda - sommets[i].lamda;
+                if (lamdaRes < vij) {
+                    sommets[i].suivants[j].lamda = sommets[i].lamda + vij;
+                    i = sommets[i].suivants[j].numero - 1;                    
+                }
+            }
+        }
+        i++;
+    }
+    _chemins = cheminOptimale();
 }
 
-function cheminOptimale(){
+function cheminOptimale() {
     let chemins = [];
     let s = dernierSommet();
     chemins.push(s);
-    while((s != null) && (s.lamda != 0)) {            
+    viderChemins();
+    while ((s != null) && (s.lamda != 0)) {
         let nb = s.predececeurs.length;
-        for(let i=0; i< nb; i++){
+        for (let i = 0; i < nb; i++) {
             let arc = findArc(s.predececeurs[i].numero, s.numero);
             let lamdap = arc.valeur + s.predececeurs[i].lamda;
-            if(s.lamda === lamdap) {
+            if (s.lamda === lamdap) {
                 chemins.push(s.predececeurs[i]);
                 break;
             }
         }
-        s = chemins[chemins.length-1];        
+        s = chemins[chemins.length - 1];
     }
     return chemins;
 }
