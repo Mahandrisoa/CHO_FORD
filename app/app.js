@@ -1,36 +1,6 @@
 let _nbSommets = 0;
 // pattern or factory method 
-class Sommet {
-    static get nombre() {
-        return _nbSommets;
-    }
-    constructor() {
-        _nbSommets++;
-        this.numero = _nbSommets;
-        if (_nbSommets === 1) {
-            this.lamda = 0;
-        } else {
-            this.lamda = 'M';
-        }
-        this.suivants = [];
-        this.predececeurs = [];
-    }
-}
 
-class Graphe {
-    constructor() {
-        this.sommets = [];
-        this.arcs = [];
-    }
-}
-
-class Arc {
-    constructor(depart, arrive, valeur) {
-        this.sommetDepart = depart;
-        this.sommetArrive = arrive;
-        this.valeur = valeur;
-    }
-}
 
 function ajouteArc(depart, arrive, valeur) {
     depart.suivants.push(arrive);
@@ -81,7 +51,7 @@ function viderChemins() {
     _chemins = [];
 }
 
-function minimalisation() {
+function minimisation() {
     let count = 0;
     let i = 0;
     while (i < sommets.length) {
@@ -230,4 +200,4 @@ sommets.map((sommet, index, sommets) => {
     }
 });
 
-minimalisation();
+minimisation();

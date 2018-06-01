@@ -1,7 +1,5 @@
-
-
 class Graphe {
-    constructor(){
+    constructor() {
         this.sommets = [];
         this.arcs = [];
     }

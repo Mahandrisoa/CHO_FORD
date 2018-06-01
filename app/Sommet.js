@@ -1,14 +1,16 @@
-class Sommet {        
-
+class Sommet{
     static get nombre() {
         return _nbSommets;
     }
-    constructor(numero = undefined, lamda){
-        this.numero = numero;
-        this.lamda  = lamda;
-        this.suivants = [];
+    constructor() {
         _nbSommets++;
-    }    
-}
-
-export {Sommet as Sommet}
+        this.numero = _nbSommets;
+        if (_nbSommets === 1) {
+            this.lamda = 0;
+        } else {
+            this.lamda = 'M';
+        }
+        this.suivants = [];
+        this.predececeurs = [];
+    }
+};

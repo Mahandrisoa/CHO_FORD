@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Mahandrisoa/CHO_FORD/issues"
   },
-  "homepage": "https://github.com/Mahandrisoa/CHO_FORD#readme"
+  "homepage": "https://github.com/Mahandrisoa/CHO_FORD#readme",
+  "dependencies": {
+    "d3": "^5.4.0"    
+  }
 }
