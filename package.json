@@ -1,0 +1,20 @@
+{
+  "name": "cho_ford",
+  "version": "1.0.0",
+  "description": "This project consists of an implementation of ford's algorithm (shortest path)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "app/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahandrisoa/CHO_FORD.git"
+  },
+  "author": "Mahandrisoa ANDRIAMAHERISOA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mahandrisoa/CHO_FORD/issues"
+  },
+  "homepage": "https://github.com/Mahandrisoa/CHO_FORD#readme"
+}
